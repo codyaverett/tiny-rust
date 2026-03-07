@@ -22,3 +22,31 @@ version = "0.1.0"
 [[package]]
 name = "raw-syscall"
 version = "0.1.0"
+
+[[package]]
+name = "tiny-base64"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-hash"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-random"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-yes"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]

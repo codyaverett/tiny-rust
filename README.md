@@ -17,12 +17,19 @@ until we reach a sub-kilobyte ELF binary.
 | 06 | [build-std](06-build-std/) | Rebuild core with `-Z build-std`, panic_immediate_abort | ~400 B* |
 | 07 | [global-asm](07-global-asm/) | Assembly entry stub via `global_asm!` | ~400 B* |
 | 08 | [upx-compressed](08-upx-compressed/) | Post-build UPX compression on example 04 | varies |
+| 09 | [tiny-yes](09-tiny-yes/) | Endless "y" output, like coreutils `yes` | ~14 KB |
+| 10 | [tiny-base64](10-tiny-base64/) | Base64 encode/decode stdin filter | ~14 KB |
+| 11 | [tiny-hash](11-tiny-hash/) | FNV-1a 64-bit hash of stdin | ~14 KB |
+| 12 | [tiny-random](12-tiny-random/) | Xorshift64 random number generator | ~14 KB |
 
 *Requires nightly toolchain. Exact size depends on toolchain version.
 
+Examples 09-12 are practical utilities proving tiny binaries can do real work,
+all using the no_std + libc pattern from example 03.
+
 ## Building
 
-Examples 02-04 are workspace members and build together:
+Examples 02-04 and 09-12 are workspace members and build together:
 
 ```sh
 cargo build --release

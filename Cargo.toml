@@ -3,6 +3,10 @@ members = [
     "02-panic-abort",
     "03-no-std",
     "04-raw-syscall",
+    "09-tiny-yes",
+    "10-tiny-base64",
+    "11-tiny-hash",
+    "12-tiny-random",
 ]
 exclude = [
     "01-release-opts",
