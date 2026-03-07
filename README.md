@@ -33,15 +33,16 @@ until we reach a sub-kilobyte ELF binary.
 | 23 | [tiny-portscan](23-tiny-portscan/) | TCP connect scanner, non-blocking I/O | ~14 KB |
 | 24 | [tiny-sandbox](24-tiny-sandbox/) | Chroot + privilege drop + execve | ~14 KB |
 | 25 | [tiny-udp-echo](25-tiny-udp-echo/) | UDP echo server with epoll multiplexing | ~14 KB |
+| 26 | [tiny-x11](26-tiny-x11/) | Raw X11 protocol, GUI window via AF_UNIX | ~14 KB |
 
 *Requires nightly toolchain. Exact size depends on toolchain version.
 
-Examples 09-12 and 14-25 are practical utilities proving tiny binaries can do real work,
+Examples 09-12 and 14-26 are practical utilities proving tiny binaries can do real work,
 all using the no_std + libc pattern from example 03.
 
 ## Building
 
-Examples 02-04, 09-12, and 14-25 are workspace members and build together:
+Examples 02-04, 09-12, and 14-26 are workspace members and build together:
 
 ```sh
 cargo build --release

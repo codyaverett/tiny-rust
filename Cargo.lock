@@ -129,6 +129,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-x11"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-yes"
 version = "0.1.0"
 dependencies = [

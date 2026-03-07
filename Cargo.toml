@@ -20,6 +20,7 @@ members = [
     "23-tiny-portscan",
     "24-tiny-sandbox",
     "25-tiny-udp-echo",
+    "26-tiny-x11",
 ]
 exclude = [
     "01-release-opts",
