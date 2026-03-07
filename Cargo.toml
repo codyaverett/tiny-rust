@@ -25,6 +25,7 @@ members = [
     "28-tiny-revproxy",
     "29-tiny-lb",
     "30-tiny-lb-sticky",
+    "31-tiny-smtp",
 ]
 exclude = [
     "01-release-opts",

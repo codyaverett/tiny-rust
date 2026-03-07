@@ -143,6 +143,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-smtp"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-udp-echo"
 version = "0.1.0"
 dependencies = [
