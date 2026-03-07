@@ -52,6 +52,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-lb"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-lb-sticky"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-mmap"
 version = "0.1.0"
 dependencies = [

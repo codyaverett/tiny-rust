@@ -23,6 +23,8 @@ members = [
     "26-tiny-x11",
     "27-tiny-proxy",
     "28-tiny-revproxy",
+    "29-tiny-lb",
+    "30-tiny-lb-sticky",
 ]
 exclude = [
     "01-release-opts",
