@@ -8,6 +8,8 @@ members = [
     "11-tiny-hash",
     "12-tiny-random",
     "13-xor-packer",
+    "14-tiny-cat",
+    "15-tiny-wc",
 ]
 exclude = [
     "01-release-opts",

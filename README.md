@@ -21,15 +21,17 @@ until we reach a sub-kilobyte ELF binary.
 | 10 | [tiny-base64](10-tiny-base64/) | Base64 encode/decode stdin filter | ~14 KB |
 | 11 | [tiny-hash](11-tiny-hash/) | FNV-1a 64-bit hash of stdin | ~14 KB |
 | 12 | [tiny-random](12-tiny-random/) | Xorshift64 random number generator | ~14 KB |
+| 14 | [tiny-cat](14-tiny-cat/) | Concatenate files/stdin, file descriptor I/O | ~14 KB |
+| 15 | [tiny-wc](15-tiny-wc/) | Count lines/words/bytes from stdin | ~14 KB |
 
 *Requires nightly toolchain. Exact size depends on toolchain version.
 
-Examples 09-12 are practical utilities proving tiny binaries can do real work,
+Examples 09-12 and 14-15 are practical utilities proving tiny binaries can do real work,
 all using the no_std + libc pattern from example 03.
 
 ## Building
 
-Examples 02-04 and 09-12 are workspace members and build together:
+Examples 02-04, 09-12, and 14-15 are workspace members and build together:
 
 ```sh
 cargo build --release

@@ -31,6 +31,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-cat"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-hash"
 version = "0.1.0"
 dependencies = [
@@ -39,6 +46,13 @@ dependencies = [
 
 [[package]]
 name = "tiny-random"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-wc"
 version = "0.1.0"
 dependencies = [
  "libc",
