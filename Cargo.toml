@@ -21,6 +21,8 @@ members = [
     "24-tiny-sandbox",
     "25-tiny-udp-echo",
     "26-tiny-x11",
+    "27-tiny-proxy",
+    "28-tiny-revproxy",
 ]
 exclude = [
     "01-release-opts",

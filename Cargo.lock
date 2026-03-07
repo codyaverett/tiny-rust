@@ -80,7 +80,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-proxy"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-random"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-revproxy"
 version = "0.1.0"
 dependencies = [
  "libc",
