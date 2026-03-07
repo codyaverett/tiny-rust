@@ -67,3 +67,8 @@ cd 08-upx-compressed && bash build.sh
 - wasm32 target (for example 05): `rustup target add wasm32-unknown-unknown`
 - [UPX](https://upx.github.io/) (for example 08, optional)
 - Linux x86_64 (examples 03-04, 06-07 use Linux syscalls and x86_64 assembly)
+
+## Documentation
+
+- [Size Optimization Guide](docs/size-optimization-guide.md) -- techniques ranked by impact with motivations, counterpoints, and measured sizes
+- [Troubleshooting](docs/troubleshooting.md) -- stack alignment SIGSEGV case study, debugging tools reference, and common pitfalls
