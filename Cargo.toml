@@ -6,6 +6,7 @@ members = [
 ]
 exclude = [
     "01-release-opts",
+    "05-tiny-wasm",
 ]
 resolver = "2"
 

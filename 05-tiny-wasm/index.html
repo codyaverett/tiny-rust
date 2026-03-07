@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tiny Rust WASM</title>
+  <style>
+    body { font-family: monospace; max-width: 600px; margin: 2em auto; }
+    h1 { font-size: 1.4em; }
+    pre { background: #f4f4f4; padding: 1em; border-radius: 4px; }
+    #output { white-space: pre; }
+  </style>
+</head>
+<body>
+  <h1>Tiny Rust WASM</h1>
+  <p>A minimal no_std Rust binary compiled to WebAssembly.</p>
+  <pre id="output">Loading...</pre>
+
+  <script>
+    async function run() {
+      const output = document.getElementById('output');
+      try {
+        const response = await fetch('tiny_wasm.wasm');
+        const bytes = await response.arrayBuffer();
+        const { instance } = await WebAssembly.instantiate(bytes);
+        const { add, fib } = instance.exports;
+
+        const lines = [
+          `WASM module size: ${bytes.byteLength} bytes`,
+          ``,
+          `add(2, 3)  = ${add(2, 3)}`,
+          `add(10, 20) = ${add(10, 20)}`,
+          ``,
+          `fib(0)  = ${fib(0)}`,
+          `fib(1)  = ${fib(1)}`,
+          `fib(10) = ${fib(10)}`,
+          `fib(20) = ${fib(20)}`,
+        ];
+        output.textContent = lines.join('\n');
+      } catch (e) {
+        output.textContent = 'Error: ' + e.message;
+      }
+    }
+    run();
+  </script>
+</body>
+</html>

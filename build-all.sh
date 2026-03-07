@@ -13,6 +13,11 @@ cargo build --release --manifest-path 01-release-opts/Cargo.toml 2>&1
 echo "--- Building workspace members (02, 03, 04) ---"
 cargo build --release 2>&1
 
+echo "--- Building 05-tiny-wasm (wasm32, standalone) ---"
+cargo build --release --manifest-path 05-tiny-wasm/Cargo.toml --target wasm32-unknown-unknown 2>&1
+# Copy wasm next to index.html for easy serving
+cp 05-tiny-wasm/target/wasm32-unknown-unknown/release/tiny_wasm.wasm 05-tiny-wasm/tiny_wasm.wasm
+
 echo
 echo "=== Binary Sizes ==="
 printf "%-20s %10s %12s\n" "Variant" "Size" "Bytes"
@@ -23,12 +28,14 @@ bins=(
     "target/release/panic-abort"
     "target/release/no-std"
     "target/release/raw-syscall"
+    "05-tiny-wasm/tiny_wasm.wasm"
 )
 names=(
     "01-release-opts"
     "02-panic-abort"
     "03-no-std"
     "04-raw-syscall"
+    "05-tiny-wasm"
 )
 
 for i in "${!bins[@]}"; do
@@ -50,6 +57,10 @@ for i in "${!bins[@]}"; do
     name="${names[$i]}"
     if [ -f "$path" ]; then
         echo "--- $name ---"
-        size "$path" 2>/dev/null || echo "  (size command failed)"
+        if [[ "$path" == *.wasm ]]; then
+            echo "  (wasm binary - use wasm-objdump for details)"
+        else
+            size "$path" 2>/dev/null || echo "  (size command failed)"
+        fi
     fi
 done
