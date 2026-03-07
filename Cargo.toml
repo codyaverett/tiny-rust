@@ -10,6 +10,11 @@ members = [
     "13-xor-packer",
     "14-tiny-cat",
     "15-tiny-wc",
+    "16-tiny-multicall",
+    "17-tiny-alloc",
+    "18-tiny-signal",
+    "19-tiny-mmap",
+    "20-tiny-server",
 ]
 exclude = [
     "01-release-opts",

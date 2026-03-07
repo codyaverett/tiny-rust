@@ -23,15 +23,20 @@ until we reach a sub-kilobyte ELF binary.
 | 12 | [tiny-random](12-tiny-random/) | Xorshift64 random number generator | ~14 KB |
 | 14 | [tiny-cat](14-tiny-cat/) | Concatenate files/stdin, file descriptor I/O | ~14 KB |
 | 15 | [tiny-wc](15-tiny-wc/) | Count lines/words/bytes from stdin | ~14 KB |
+| 16 | [tiny-multicall](16-tiny-multicall/) | BusyBox-style argv[0] dispatch | ~14 KB |
+| 17 | [tiny-alloc](17-tiny-alloc/) | Bump allocator, heap without std | ~14 KB |
+| 18 | [tiny-signal](18-tiny-signal/) | Signal handling with sigaction | ~14 KB |
+| 19 | [tiny-mmap](19-tiny-mmap/) | Memory-mapped file I/O, zero-copy | ~14 KB |
+| 20 | [tiny-server](20-tiny-server/) | HTTP server with raw sockets | ~14 KB |
 
 *Requires nightly toolchain. Exact size depends on toolchain version.
 
-Examples 09-12 and 14-15 are practical utilities proving tiny binaries can do real work,
+Examples 09-12 and 14-20 are practical utilities proving tiny binaries can do real work,
 all using the no_std + libc pattern from example 03.
 
 ## Building
 
-Examples 02-04, 09-12, and 14-15 are workspace members and build together:
+Examples 02-04, 09-12, and 14-20 are workspace members and build together:
 
 ```sh
 cargo build --release

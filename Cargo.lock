@@ -24,6 +24,13 @@ name = "raw-syscall"
 version = "0.1.0"
 
 [[package]]
+name = "tiny-alloc"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-base64"
 version = "0.1.0"
 dependencies = [
@@ -45,7 +52,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-mmap"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-multicall"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-random"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-server"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-signal"
 version = "0.1.0"
 dependencies = [
  "libc",
