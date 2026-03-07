@@ -28,15 +28,20 @@ until we reach a sub-kilobyte ELF binary.
 | 18 | [tiny-signal](18-tiny-signal/) | Signal handling with sigaction | ~14 KB |
 | 19 | [tiny-mmap](19-tiny-mmap/) | Memory-mapped file I/O, zero-copy | ~14 KB |
 | 20 | [tiny-server](20-tiny-server/) | HTTP server with raw sockets | ~14 KB |
+| 21 | [tiny-sha256](21-tiny-sha256/) | SHA-256 hash of stdin (NIST crypto primitive) | ~14 KB |
+| 22 | [tiny-pipe](22-tiny-pipe/) | Fork + pipe IPC, child/parent messaging | ~14 KB |
+| 23 | [tiny-portscan](23-tiny-portscan/) | TCP connect scanner, non-blocking I/O | ~14 KB |
+| 24 | [tiny-sandbox](24-tiny-sandbox/) | Chroot + privilege drop + execve | ~14 KB |
+| 25 | [tiny-udp-echo](25-tiny-udp-echo/) | UDP echo server with epoll multiplexing | ~14 KB |
 
 *Requires nightly toolchain. Exact size depends on toolchain version.
 
-Examples 09-12 and 14-20 are practical utilities proving tiny binaries can do real work,
+Examples 09-12 and 14-25 are practical utilities proving tiny binaries can do real work,
 all using the no_std + libc pattern from example 03.
 
 ## Building
 
-Examples 02-04, 09-12, and 14-20 are workspace members and build together:
+Examples 02-04, 09-12, and 14-25 are workspace members and build together:
 
 ```sh
 cargo build --release

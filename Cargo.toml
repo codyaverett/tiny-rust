@@ -15,6 +15,11 @@ members = [
     "18-tiny-signal",
     "19-tiny-mmap",
     "20-tiny-server",
+    "21-tiny-sha256",
+    "22-tiny-pipe",
+    "23-tiny-portscan",
+    "24-tiny-sandbox",
+    "25-tiny-udp-echo",
 ]
 exclude = [
     "01-release-opts",
