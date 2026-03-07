@@ -1,0 +1,17 @@
+[workspace]
+members = [
+    "02-panic-abort",
+    "03-no-std",
+    "04-raw-syscall",
+]
+exclude = [
+    "01-release-opts",
+]
+resolver = "2"
+
+[profile.release]
+strip = true
+lto = true
+opt-level = "z"
+codegen-units = 1
+panic = "abort"
