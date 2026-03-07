@@ -7,6 +7,7 @@ members = [
     "10-tiny-base64",
     "11-tiny-hash",
     "12-tiny-random",
+    "13-xor-packer",
 ]
 exclude = [
     "01-release-opts",

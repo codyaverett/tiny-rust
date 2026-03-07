@@ -10,7 +10,7 @@ echo
 echo "--- Building 01-release-opts (standalone) ---"
 cargo build --release --manifest-path 01-release-opts/Cargo.toml 2>&1
 
-echo "--- Building workspace members (02, 03, 04, 09-12) ---"
+echo "--- Building workspace members (02, 03, 04, 09-13) ---"
 cargo build --release 2>&1
 
 echo "--- Building 05-tiny-wasm (wasm32, standalone) ---"
@@ -33,6 +33,7 @@ bins=(
     "target/release/tiny-base64"
     "target/release/tiny-hash"
     "target/release/tiny-random"
+    "target/release/xor-packer"
 )
 names=(
     "01-release-opts"
@@ -44,6 +45,7 @@ names=(
     "10-tiny-base64"
     "11-tiny-hash"
     "12-tiny-random"
+    "13-xor-packer"
 )
 
 for i in "${!bins[@]}"; do

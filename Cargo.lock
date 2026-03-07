@@ -50,3 +50,7 @@ version = "0.1.0"
 dependencies = [
  "libc",
 ]
+
+[[package]]
+name = "xor-packer"
+version = "0.1.0"
