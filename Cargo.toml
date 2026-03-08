@@ -31,6 +31,7 @@ members = [
     "34-tiny-objstore",
     "35-tiny-transformer",
     "36-tiny-gpt2",
+    "37-tiny-sql-db",
 ]
 exclude = [
     "01-release-opts",

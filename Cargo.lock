@@ -178,6 +178,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-sql-db"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-transformer"
 version = "0.1.0"
 dependencies = [
