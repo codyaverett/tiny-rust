@@ -30,6 +30,7 @@ members = [
     "33-tiny-kv",
     "34-tiny-objstore",
     "35-tiny-transformer",
+    "36-tiny-gpt2",
 ]
 exclude = [
     "01-release-opts",

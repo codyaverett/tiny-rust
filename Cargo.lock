@@ -52,6 +52,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-gpt2"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-hash"
 version = "0.1.0"
 dependencies = [

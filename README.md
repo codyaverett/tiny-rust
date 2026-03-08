@@ -43,15 +43,16 @@ until we reach a sub-kilobyte ELF binary.
 | 33 | [tiny-kv](33-tiny-kv/) | Hash table key-value store with REST CRUD | ~14 KB |
 | 34 | [tiny-objstore](34-tiny-objstore/) | Content-addressable object store with dedup | ~14 KB |
 | 35 | [tiny-transformer](35-tiny-transformer/) | GPT-style transformer with attention, FFN, layer norm | ~14 KB |
+| 36 | [tiny-gpt2](36-tiny-gpt2/) | GPT-2 Small (124M) inference with real pre-trained weights | ~14 KB |
 
 *Requires nightly toolchain. Exact size depends on toolchain version.
 
-Examples 09-12 and 14-35 are practical utilities proving tiny binaries can do real work,
+Examples 09-12 and 14-36 are practical utilities proving tiny binaries can do real work,
 all using the no_std + libc pattern from example 03.
 
 ## Building
 
-Examples 02-04, 09-12, and 14-35 are workspace members and build together:
+Examples 02-04, 09-12, and 14-36 are workspace members and build together:
 
 ```sh
 cargo build --release
