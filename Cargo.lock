@@ -66,6 +66,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-kafka-broker"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-kafka-cluster"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-kafka-pubsub"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-kv"
 version = "0.1.0"
 dependencies = [

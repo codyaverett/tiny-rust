@@ -58,6 +58,9 @@ bins=(
     "target/release/tiny-transformer"
     "target/release/tiny-gpt2"
     "target/release/tiny-sql-db"
+    "target/release/tiny-kafka-broker"
+    "target/release/tiny-kafka-pubsub"
+    "target/release/tiny-kafka-cluster"
 )
 names=(
     "01-release-opts"
@@ -94,6 +97,9 @@ names=(
     "35-tiny-transformer"
     "36-tiny-gpt2"
     "37-tiny-sql-db"
+    "38-tiny-kafka-broker"
+    "39-tiny-kafka-pubsub"
+    "40-tiny-kafka-cluster"
 )
 
 for i in "${!bins[@]}"; do

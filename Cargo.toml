@@ -32,6 +32,9 @@ members = [
     "35-tiny-transformer",
     "36-tiny-gpt2",
     "37-tiny-sql-db",
+    "38-tiny-kafka-broker",
+    "39-tiny-kafka-pubsub",
+    "40-tiny-kafka-cluster",
 ]
 exclude = [
     "01-release-opts",
