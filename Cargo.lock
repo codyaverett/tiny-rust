@@ -38,6 +38,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "tiny-blockchain"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "tiny-cat"
 version = "0.1.0"
 dependencies = [
@@ -46,6 +53,13 @@ dependencies = [
 
 [[package]]
 name = "tiny-hash"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-kv"
 version = "0.1.0"
 dependencies = [
  "libc",
@@ -74,6 +88,13 @@ dependencies = [
 
 [[package]]
 name = "tiny-multicall"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-objstore"
 version = "0.1.0"
 dependencies = [
  "libc",
@@ -144,6 +165,13 @@ dependencies = [
 
 [[package]]
 name = "tiny-smtp"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "tiny-transformer"
 version = "0.1.0"
 dependencies = [
  "libc",

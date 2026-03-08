@@ -39,15 +39,19 @@ until we reach a sub-kilobyte ELF binary.
 | 29 | [tiny-lb](29-tiny-lb/) | Round-robin HTTP load balancer | ~14 KB |
 | 30 | [tiny-lb-sticky](30-tiny-lb-sticky/) | IP-hash sticky session load balancer | ~14 KB |
 | 31 | [tiny-smtp](31-tiny-smtp/) | SMTP mail server, text protocol state machine | ~14 KB |
+| 32 | [tiny-blockchain](32-tiny-blockchain/) | In-memory blockchain with HTTP API, hash chains | ~14 KB |
+| 33 | [tiny-kv](33-tiny-kv/) | Hash table key-value store with REST CRUD | ~14 KB |
+| 34 | [tiny-objstore](34-tiny-objstore/) | Content-addressable object store with dedup | ~14 KB |
+| 35 | [tiny-transformer](35-tiny-transformer/) | GPT-style transformer with attention, FFN, layer norm | ~14 KB |
 
 *Requires nightly toolchain. Exact size depends on toolchain version.
 
-Examples 09-12 and 14-31 are practical utilities proving tiny binaries can do real work,
+Examples 09-12 and 14-35 are practical utilities proving tiny binaries can do real work,
 all using the no_std + libc pattern from example 03.
 
 ## Building
 
-Examples 02-04, 09-12, and 14-31 are workspace members and build together:
+Examples 02-04, 09-12, and 14-35 are workspace members and build together:
 
 ```sh
 cargo build --release

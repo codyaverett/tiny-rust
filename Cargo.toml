@@ -26,6 +26,10 @@ members = [
     "29-tiny-lb",
     "30-tiny-lb-sticky",
     "31-tiny-smtp",
+    "32-tiny-blockchain",
+    "33-tiny-kv",
+    "34-tiny-objstore",
+    "35-tiny-transformer",
 ]
 exclude = [
     "01-release-opts",
