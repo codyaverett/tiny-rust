@@ -10,6 +10,9 @@ fn panic(_info: &PanicInfo) -> ! {
     }
 }
 
+#[no_mangle]
+pub extern "C" fn rust_eh_personality() {}
+
 unsafe fn write_all(fd: i32, buf: &[u8]) {
     let mut written = 0;
     while written < buf.len() {
