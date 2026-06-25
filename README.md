@@ -21,6 +21,7 @@ until we reach a sub-kilobyte ELF binary.
 | 10 | [tiny-base64](10-tiny-base64/) | Base64 encode/decode stdin filter | ~14 KB |
 | 11 | [tiny-hash](11-tiny-hash/) | FNV-1a 64-bit hash of stdin | ~14 KB |
 | 12 | [tiny-random](12-tiny-random/) | Xorshift64 random number generator | ~14 KB |
+| 13 | [xor-packer](13-xor-packer/) | Runtime XOR-decrypt and exec of shellcode | ~14 KB |
 | 14 | [tiny-cat](14-tiny-cat/) | Concatenate files/stdin, file descriptor I/O | ~14 KB |
 | 15 | [tiny-wc](15-tiny-wc/) | Count lines/words/bytes from stdin | ~14 KB |
 | 16 | [tiny-multicall](16-tiny-multicall/) | BusyBox-style argv[0] dispatch | ~14 KB |
@@ -45,15 +46,18 @@ until we reach a sub-kilobyte ELF binary.
 | 35 | [tiny-transformer](35-tiny-transformer/) | GPT-style transformer with attention, FFN, layer norm | ~14 KB |
 | 36 | [tiny-gpt2](36-tiny-gpt2/) | GPT-2 Small (124M) inference with real pre-trained weights | ~14 KB |
 | 37 | [tiny-sql-db](37-tiny-sql-db/) | SQL database engine with HTTP API, tokenizer, direct execution | ~14 KB |
+| 38 | [tiny-kafka-broker](38-tiny-kafka-broker/) | Kafka-like broker: partitioned topics, consumer groups, ring buffers | ~14 KB |
+| 39 | [tiny-kafka-pubsub](39-tiny-kafka-pubsub/) | Kafka-style pub/sub broker with topic filters | ~14 KB |
+| 40 | [tiny-kafka-cluster](40-tiny-kafka-cluster/) | Multi-broker Kafka cluster with partitions and consumer groups | ~14 KB |
 
 *Requires nightly toolchain. Exact size depends on toolchain version.
 
-Examples 09-12 and 14-37 are practical utilities proving tiny binaries can do real work,
+Examples 09-40 are practical utilities proving tiny binaries can do real work,
 all using the no_std + libc pattern from example 03.
 
 ## Building
 
-Examples 02-04, 09-12, and 14-37 are workspace members and build together:
+Examples 02-04 and 09-40 are workspace members and build together:
 
 ```sh
 cargo build --release
@@ -90,7 +94,7 @@ cd 08-upx-compressed && bash build.sh
 - Rust nightly (for examples 06-07): `rustup toolchain install nightly`
 - wasm32 target (for example 05): `rustup target add wasm32-unknown-unknown`
 - [UPX](https://upx.github.io/) (for example 08, optional)
-- Linux x86_64 (examples 03-04, 06-07 use Linux syscalls and x86_64 assembly)
+- Linux x86_64 (examples 03-04, 06-07, 13 use Linux syscalls and x86_64 assembly)
 
 ## Documentation
 
