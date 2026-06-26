@@ -96,6 +96,14 @@ cd 08-upx-compressed && bash build.sh
 - [UPX](https://upx.github.io/) (for example 08, optional)
 - Linux x86_64 (examples 03-04, 06-07, 13 use Linux syscalls and x86_64 assembly)
 
+## Roadmap
+
+The next 100+ examples are mapped out. See [docs/ideas/](docs/ideas/):
+
+- [Roadmap](docs/ideas/roadmap.md) -- what to build first, plus 8 themed learning series (Unix toolbox, build a tiny OS, AI from scratch, emulators, compression, and more)
+- [Idea Catalog](docs/ideas/catalog.md) -- the full backlog of 248 candidate programs, tiered and grouped by category
+- [Organizing 100+ Examples](docs/ideas/organization.md) -- numbering, status tracking, and navigation scheme for scaling the repo
+
 ## Documentation
 
 - [Size Optimization Guide](docs/size-optimization-guide.md) -- techniques ranked by impact with motivations, counterpoints, and measured sizes
