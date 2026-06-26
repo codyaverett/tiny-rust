@@ -6,3 +6,8 @@ edition = "2021"
 
 [dependencies]
 libc = { version = "0.2", default-features = false }
+
+[package.metadata.tiny]
+class  = "size-lab"
+build  = "hosted"
+domain = "size"

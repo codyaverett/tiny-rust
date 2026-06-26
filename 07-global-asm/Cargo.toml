@@ -9,3 +9,8 @@ lto = true
 opt-level = "z"
 codegen-units = 1
 panic = "abort"
+
+[package.metadata.tiny]
+class  = "size-lab"
+build  = "nightly"
+domain = "size"

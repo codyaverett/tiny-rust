@@ -8,3 +8,8 @@ strip = true
 lto = true
 opt-level = "z"
 codegen-units = 1
+
+[package.metadata.tiny]
+class  = "size-lab"
+build  = "size-lab"
+domain = "size"

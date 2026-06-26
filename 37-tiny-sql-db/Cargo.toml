@@ -5,3 +5,8 @@ edition = "2021"
 
 [dependencies]
 libc = { version = "0.2", default-features = false }
+
+[package.metadata.tiny]
+class  = "data-storage"
+build  = "hosted"
+domain = "datastructures-db"

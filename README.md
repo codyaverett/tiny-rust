@@ -106,5 +106,6 @@ The next 100+ examples are mapped out. See [docs/ideas/](docs/ideas/):
 
 ## Documentation
 
+- [Project Classes](docs/CLASSES.md) -- how examples are categorized by class (navigation) and build contract (toolchain), and the `[package.metadata.tiny]` scheme
 - [Size Optimization Guide](docs/size-optimization-guide.md) -- techniques ranked by impact with motivations, counterpoints, and measured sizes
 - [Troubleshooting](docs/troubleshooting.md) -- stack alignment SIGSEGV case study, debugging tools reference, and common pitfalls

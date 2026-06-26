@@ -5,3 +5,9 @@ edition = "2021"
 
 [dependencies]
 libc = { version = "0.2", default-features = false }
+
+[package.metadata.tiny]
+class  = "compute-ai"
+build  = "hosted"
+domain = "ai-models"
+series = "ai-from-scratch"

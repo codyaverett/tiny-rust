@@ -3,3 +3,8 @@ name = "raw-syscall"
 version = "0.1.0"
 edition = "2021"
 
+
+[package.metadata.tiny]
+class  = "size-lab"
+build  = "hosted"
+domain = "size"

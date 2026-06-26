@@ -2,3 +2,8 @@
 name = "xor-packer"
 version = "0.1.0"
 edition = "2021"
+
+[package.metadata.tiny]
+class  = "userland-tools"
+build  = "hosted"
+domain = "devtools-misc"

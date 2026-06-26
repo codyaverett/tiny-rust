@@ -5,3 +5,8 @@ edition = "2021"
 
 [lib]
 crate-type = ["cdylib"]
+
+[package.metadata.tiny]
+class  = "size-lab"
+build  = "wasm"
+domain = "size"
