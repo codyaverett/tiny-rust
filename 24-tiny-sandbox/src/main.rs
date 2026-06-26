@@ -63,7 +63,11 @@ impl Args {
             libc::O_RDONLY,
         );
         if fd >= 0 {
-            let n = libc::read(fd, args.buf.as_mut_ptr() as *mut libc::c_void, args.buf.len());
+            let n = libc::read(
+                fd,
+                args.buf.as_mut_ptr() as *mut libc::c_void,
+                args.buf.len(),
+            );
             libc::close(fd);
             if n > 0 {
                 args.len = n as usize;
@@ -132,14 +136,20 @@ fn run() {
 
         if args.count() < 3 {
             write_all(1, b"tiny-sandbox: chroot + privilege drop + execve\n\n");
-            write_all(1, b"Usage: tiny-sandbox <chroot-dir> <uid> [command] [args...]\n\n");
+            write_all(
+                1,
+                b"Usage: tiny-sandbox <chroot-dir> <uid> [command] [args...]\n\n",
+            );
             write_all(1, b"Steps performed:\n");
             write_all(1, b"  1. fork() child process\n");
             write_all(1, b"  2. chroot() to <chroot-dir>\n");
             write_all(1, b"  3. chdir() to /\n");
             write_all(1, b"  4. setgid(uid) + setuid(uid) to drop privileges\n");
             write_all(1, b"  5. execve() the command (default: /bin/sh)\n\n");
-            write_all(1, b"Example: sudo ./tiny-sandbox /tmp/jail 1000 /bin/ls /\n\n");
+            write_all(
+                1,
+                b"Example: sudo ./tiny-sandbox /tmp/jail 1000 /bin/ls /\n\n",
+            );
             write_all(1, b"Note: chroot requires root privileges.\n");
             write_all(
                 1,
@@ -194,8 +204,7 @@ fn run() {
         while arg_idx < args.count() && exec_argc < 15 {
             if let Some(a) = args.get(arg_idx) {
                 if make_cstr(a, &mut arg_bufs[exec_argc - 1]) {
-                    exec_argv[exec_argc] =
-                        arg_bufs[exec_argc - 1].as_ptr() as *const libc::c_char;
+                    exec_argv[exec_argc] = arg_bufs[exec_argc - 1].as_ptr() as *const libc::c_char;
                     exec_argc += 1;
                 }
             }

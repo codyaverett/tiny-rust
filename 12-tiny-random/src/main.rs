@@ -60,11 +60,7 @@ unsafe fn write_u64_decimal(fd: i32, value: u64) {
         }
     }
 
-    libc::write(
-        fd,
-        buf.as_ptr().add(pos) as *const libc::c_void,
-        21 - pos,
-    );
+    libc::write(fd, buf.as_ptr().add(pos) as *const libc::c_void, 21 - pos);
 }
 
 unsafe fn write_raw_bytes(fd: i32, state: &mut u64, count: usize) {

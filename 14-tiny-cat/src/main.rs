@@ -138,10 +138,7 @@ fn run() {
                 }
                 path[arg.len()] = 0;
 
-                let file_fd = libc::open(
-                    path.as_ptr() as *const libc::c_char,
-                    libc::O_RDONLY,
-                );
+                let file_fd = libc::open(path.as_ptr() as *const libc::c_char, libc::O_RDONLY);
                 if file_fd < 0 {
                     // Write error message to stderr
                     let prefix = b"tiny-cat: ";

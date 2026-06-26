@@ -151,8 +151,7 @@ fn run() {
         let mut req_count: u32 = 0;
 
         loop {
-            let client_fd =
-                libc::accept(listen_fd, core::ptr::null_mut(), core::ptr::null_mut());
+            let client_fd = libc::accept(listen_fd, core::ptr::null_mut(), core::ptr::null_mut());
             if client_fd < 0 {
                 continue;
             }

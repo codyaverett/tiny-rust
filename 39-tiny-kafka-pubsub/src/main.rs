@@ -403,11 +403,7 @@ fn handle_command(pub_state: &mut Publisher, sub_idx: usize, line: &[u8], num_bu
 
     if bytes_eq(line, b"SUBSCRIBE") || starts_with(line, b"SUBSCRIBE ") {
         // Extract optional filter
-        let filter = if line.len() > 10 {
-            &line[10..]
-        } else {
-            &[]
-        };
+        let filter = if line.len() > 10 { &line[10..] } else { &[] };
         pub_state.handle_subscribe(sub_idx, filter);
         unsafe {
             write_all(1, b"tiny-kafka: client subscribed");

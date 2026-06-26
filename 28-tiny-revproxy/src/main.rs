@@ -211,8 +211,7 @@ fn run() {
 
         loop {
             let mut client_addr: libc::sockaddr_in = core::mem::zeroed();
-            let mut addr_len: libc::socklen_t =
-                core::mem::size_of::<libc::sockaddr_in>() as u32;
+            let mut addr_len: libc::socklen_t = core::mem::size_of::<libc::sockaddr_in>() as u32;
 
             let client_fd = libc::accept(
                 listen_fd,

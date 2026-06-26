@@ -115,7 +115,11 @@ fn run() {
 
             // Read request (we don't parse it, just drain it)
             let mut req_buf = [0u8; 1024];
-            libc::read(client, req_buf.as_mut_ptr() as *mut libc::c_void, req_buf.len());
+            libc::read(
+                client,
+                req_buf.as_mut_ptr() as *mut libc::c_void,
+                req_buf.len(),
+            );
 
             // Build HTTP response
             // Content-Length header

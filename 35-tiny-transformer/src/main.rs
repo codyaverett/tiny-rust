@@ -475,21 +475,9 @@ fn self_attention(model: &Model, scratch: &mut Scratch, seq_len: usize) {
     // Project Q, K, V for each position
     let mut t = 0;
     while t < seq_len {
-        mat_vec_mul::<EMBED_DIM, EMBED_DIM>(
-            &model.wq,
-            &scratch.hidden[t],
-            &mut scratch.q[t],
-        );
-        mat_vec_mul::<EMBED_DIM, EMBED_DIM>(
-            &model.wk,
-            &scratch.hidden[t],
-            &mut scratch.k[t],
-        );
-        mat_vec_mul::<EMBED_DIM, EMBED_DIM>(
-            &model.wv,
-            &scratch.hidden[t],
-            &mut scratch.v[t],
-        );
+        mat_vec_mul::<EMBED_DIM, EMBED_DIM>(&model.wq, &scratch.hidden[t], &mut scratch.q[t]);
+        mat_vec_mul::<EMBED_DIM, EMBED_DIM>(&model.wk, &scratch.hidden[t], &mut scratch.k[t]);
+        mat_vec_mul::<EMBED_DIM, EMBED_DIM>(&model.wv, &scratch.hidden[t], &mut scratch.v[t]);
         t += 1;
     }
 
@@ -503,8 +491,7 @@ fn self_attention(model: &Model, scratch: &mut Scratch, seq_len: usize) {
         while j < seq_len {
             if j <= i {
                 // causal: can attend to current and past
-                scratch.attn[i][j] =
-                    dot_product(&scratch.q[i], &scratch.k[j], EMBED_DIM) * scale;
+                scratch.attn[i][j] = dot_product(&scratch.q[i], &scratch.k[j], EMBED_DIM) * scale;
             } else {
                 // mask future positions
                 scratch.attn[i][j] = -1e9;
@@ -542,11 +529,7 @@ fn self_attention(model: &Model, scratch: &mut Scratch, seq_len: usize) {
     // Output projection
     i = 0;
     while i < seq_len {
-        mat_vec_mul::<EMBED_DIM, EMBED_DIM>(
-            &model.wo,
-            &scratch.attn_out[i],
-            &mut scratch.tmp,
-        );
+        mat_vec_mul::<EMBED_DIM, EMBED_DIM>(&model.wo, &scratch.attn_out[i], &mut scratch.tmp);
         vec_copy(&mut scratch.attn_out[i], &scratch.tmp, EMBED_DIM);
         i += 1;
     }
@@ -575,11 +558,7 @@ fn feed_forward(model: &Model, scratch: &mut Scratch, seq_len: usize) {
             i += 1;
         }
         // Second linear: ff_dim -> embed_dim
-        mat_vec_mul::<EMBED_DIM, FF_DIM>(
-            &model.ff2_w,
-            &scratch.ff_hidden[t],
-            &mut scratch.tmp,
-        );
+        mat_vec_mul::<EMBED_DIM, FF_DIM>(&model.ff2_w, &scratch.ff_hidden[t], &mut scratch.tmp);
         // Add bias
         i = 0;
         while i < EMBED_DIM {
@@ -638,12 +617,7 @@ fn transformer_block(model: &Model, scratch: &mut Scratch, seq_len: usize) {
 // Forward pass: embed -> positional -> transformer -> unembed
 // ---------------------------------------------------------------------------
 
-fn forward(
-    model: &Model,
-    scratch: &mut Scratch,
-    tokens: &[u8],
-    seq_len: usize,
-) {
+fn forward(model: &Model, scratch: &mut Scratch, tokens: &[u8], seq_len: usize) {
     // Embed tokens with positional encoding
     let mut t = 0;
     while t < seq_len {
@@ -728,10 +702,7 @@ fn init_weights(model: &mut Model, rng: &mut Rng) {
     }
 }
 
-fn init_matrix<const ROWS: usize, const COLS: usize>(
-    mat: &mut [[f32; COLS]; ROWS],
-    rng: &mut Rng,
-) {
+fn init_matrix<const ROWS: usize, const COLS: usize>(mat: &mut [[f32; COLS]; ROWS], rng: &mut Rng) {
     let mut i = 0;
     while i < ROWS {
         let mut j = 0;

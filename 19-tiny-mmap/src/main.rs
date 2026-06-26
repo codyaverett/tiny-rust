@@ -102,10 +102,7 @@ fn run() {
         path_buf[path_len] = 0;
 
         // Open the file
-        let fd = libc::open(
-            path_buf.as_ptr() as *const libc::c_char,
-            libc::O_RDONLY,
-        );
+        let fd = libc::open(path_buf.as_ptr() as *const libc::c_char, libc::O_RDONLY);
         if fd < 0 {
             write_all(2, b"tiny-mmap: cannot open file\n");
             libc::exit(1);

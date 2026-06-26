@@ -200,7 +200,9 @@ fn skip_spaces(buf: &[u8], start: usize) -> usize {
 fn find_topic(broker: &Broker, name: &[u8]) -> Option<usize> {
     let mut i = 0;
     while i < MAX_TOPICS {
-        if broker.topics[i].active && bytes_eq(&broker.topics[i].name[..broker.topics[i].name_len], name) {
+        if broker.topics[i].active
+            && bytes_eq(&broker.topics[i].name[..broker.topics[i].name_len], name)
+        {
             return Some(i);
         }
         i += 1;
@@ -218,7 +220,10 @@ fn find_or_create_offset(
     let mut i = 0;
     while i < MAX_OFFSETS {
         if broker.offsets[i].active
-            && bytes_eq(&broker.offsets[i].group[..broker.offsets[i].group_len], group)
+            && bytes_eq(
+                &broker.offsets[i].group[..broker.offsets[i].group_len],
+                group,
+            )
             && broker.offsets[i].topic_idx == topic_idx
             && broker.offsets[i].partition_idx == partition_idx
         {
@@ -251,7 +256,13 @@ fn find_or_create_offset(
     None
 }
 
-fn cmd_create_topic(broker: &mut Broker, buf: &[u8], len: usize, resp: &mut [u8], rlen: &mut usize) {
+fn cmd_create_topic(
+    broker: &mut Broker,
+    buf: &[u8],
+    len: usize,
+    resp: &mut [u8],
+    rlen: &mut usize,
+) {
     // CREATE_TOPIC name [partitions]
     let start = skip_spaces(buf, 0);
     let name_end = next_space(buf, start);
@@ -346,7 +357,11 @@ fn cmd_produce(broker: &mut Broker, buf: &[u8], len: usize, resp: &mut [u8], rle
 
     let part = &mut topic.partitions[pidx];
     let head = part.head;
-    let msg_len = if msg.len() > MAX_MSG_LEN { MAX_MSG_LEN } else { msg.len() };
+    let msg_len = if msg.len() > MAX_MSG_LEN {
+        MAX_MSG_LEN
+    } else {
+        msg.len()
+    };
 
     let mut j = 0;
     while j < msg_len {
@@ -439,7 +454,11 @@ fn cmd_consume(broker: &Broker, buf: &[u8], len: usize, resp: &mut [u8], rlen: &
         let n = format_u64(offset, &mut obuf);
         copy_to(resp, rlen, &obuf[..n]);
         copy_to(resp, rlen, b" ");
-        copy_to(resp, rlen, &part.messages[index].data[..part.messages[index].data_len]);
+        copy_to(
+            resp,
+            rlen,
+            &part.messages[index].data[..part.messages[index].data_len],
+        );
         copy_to(resp, rlen, b"\n");
         offset += 1;
         fetched += 1;
@@ -452,7 +471,11 @@ fn cmd_list_topics(broker: &Broker, resp: &mut [u8], rlen: &mut usize) {
     while i < MAX_TOPICS {
         if broker.topics[i].active {
             copy_to(resp, rlen, b"TOPIC ");
-            copy_to(resp, rlen, &broker.topics[i].name[..broker.topics[i].name_len]);
+            copy_to(
+                resp,
+                rlen,
+                &broker.topics[i].name[..broker.topics[i].name_len],
+            );
             copy_to(resp, rlen, b" ");
             let mut nbuf = [0u8; 10];
             let n = format_u32(broker.topics[i].num_partitions as u32, &mut nbuf);
@@ -582,7 +605,10 @@ fn cmd_poll(broker: &mut Broker, buf: &[u8], _len: usize, resp: &mut [u8], rlen:
         let mut oi = 0;
         while oi < MAX_OFFSETS {
             if broker.offsets[oi].active
-                && bytes_eq(&broker.offsets[oi].group[..broker.offsets[oi].group_len], group)
+                && bytes_eq(
+                    &broker.offsets[oi].group[..broker.offsets[oi].group_len],
+                    group,
+                )
                 && broker.offsets[oi].topic_idx == tidx
                 && broker.offsets[oi].partition_idx == p
             {
@@ -615,14 +641,21 @@ fn cmd_poll(broker: &mut Broker, buf: &[u8], _len: usize, resp: &mut [u8], rlen:
             let n = format_u64(best_offset, &mut obuf);
             copy_to(resp, rlen, &obuf[..n]);
             copy_to(resp, rlen, b" ");
-            copy_to(resp, rlen, &part.messages[index].data[..part.messages[index].data_len]);
+            copy_to(
+                resp,
+                rlen,
+                &part.messages[index].data[..part.messages[index].data_len],
+            );
             copy_to(resp, rlen, b"\n");
 
             // Auto-advance the offset
             let mut oi = 0;
             while oi < MAX_OFFSETS {
                 if broker.offsets[oi].active
-                    && bytes_eq(&broker.offsets[oi].group[..broker.offsets[oi].group_len], group)
+                    && bytes_eq(
+                        &broker.offsets[oi].group[..broker.offsets[oi].group_len],
+                        group,
+                    )
                     && broker.offsets[oi].topic_idx == tidx
                     && broker.offsets[oi].partition_idx == pidx
                 {
@@ -826,21 +859,57 @@ fn run() {
             let args_start = skip_spaces(&buf, cmd_end);
 
             if bytes_eq(cmd, b"CREATE_TOPIC") {
-                cmd_create_topic(broker, &buf[args_start..line_len], line_len - args_start, &mut resp, &mut rlen);
+                cmd_create_topic(
+                    broker,
+                    &buf[args_start..line_len],
+                    line_len - args_start,
+                    &mut resp,
+                    &mut rlen,
+                );
             } else if bytes_eq(cmd, b"PRODUCE") {
-                cmd_produce(broker, &buf[args_start..line_len], line_len - args_start, &mut resp, &mut rlen);
+                cmd_produce(
+                    broker,
+                    &buf[args_start..line_len],
+                    line_len - args_start,
+                    &mut resp,
+                    &mut rlen,
+                );
             } else if bytes_eq(cmd, b"CONSUME") {
-                cmd_consume(broker, &buf[args_start..line_len], line_len - args_start, &mut resp, &mut rlen);
+                cmd_consume(
+                    broker,
+                    &buf[args_start..line_len],
+                    line_len - args_start,
+                    &mut resp,
+                    &mut rlen,
+                );
             } else if bytes_eq(cmd, b"LIST_TOPICS") {
                 cmd_list_topics(broker, &mut resp, &mut rlen);
             } else if bytes_eq(cmd, b"STATS") {
                 cmd_stats(broker, &mut resp, &mut rlen);
             } else if bytes_eq(cmd, b"SUBSCRIBE") {
-                cmd_subscribe(broker, &buf[args_start..line_len], line_len - args_start, &mut resp, &mut rlen);
+                cmd_subscribe(
+                    broker,
+                    &buf[args_start..line_len],
+                    line_len - args_start,
+                    &mut resp,
+                    &mut rlen,
+                );
             } else if bytes_eq(cmd, b"POLL") {
-                cmd_poll(broker, &buf[args_start..line_len], line_len - args_start, &mut resp, &mut rlen);
+                cmd_poll(
+                    broker,
+                    &buf[args_start..line_len],
+                    line_len - args_start,
+                    &mut resp,
+                    &mut rlen,
+                );
             } else if bytes_eq(cmd, b"COMMIT") {
-                cmd_commit(broker, &buf[args_start..line_len], line_len - args_start, &mut resp, &mut rlen);
+                cmd_commit(
+                    broker,
+                    &buf[args_start..line_len],
+                    line_len - args_start,
+                    &mut resp,
+                    &mut rlen,
+                );
             } else {
                 copy_to(&mut resp, &mut rlen, b"ERR unknown command\n");
             }

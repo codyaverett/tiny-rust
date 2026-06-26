@@ -87,7 +87,10 @@ fn run() {
         write_all(1, &num_buf[..len]);
         write_all(1, b"\n");
 
-        write_all(1, b"Waiting for signals... (Ctrl+C to quit, kill -USR1 <pid> to ping)\n");
+        write_all(
+            1,
+            b"Waiting for signals... (Ctrl+C to quit, kill -USR1 <pid> to ping)\n",
+        );
 
         let mut sigusr1_count: u64 = 0;
 

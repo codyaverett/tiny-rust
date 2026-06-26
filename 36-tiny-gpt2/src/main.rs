@@ -151,7 +151,11 @@ fn exp_approx(x: f32) -> f32 {
     y *= y; // 256
     y *= y; // 512
     y *= y; // 1024
-    if y < 0.0 { 0.0 } else { y }
+    if y < 0.0 {
+        0.0
+    } else {
+        y
+    }
 }
 
 /// tanh(x) = (exp(2x) - 1) / (exp(2x) + 1)
@@ -424,23 +428,23 @@ impl Rng {
 // ---------------------------------------------------------------------------
 
 struct LayerWeights {
-    ln1_weight: *const f32,  // [768]
-    ln1_bias: *const f32,    // [768]
+    ln1_weight: *const f32,    // [768]
+    ln1_bias: *const f32,      // [768]
     c_attn_weight: *const f32, // [2304, 768] (QKV combined, row-major)
     c_attn_bias: *const f32,   // [2304]
     c_proj_weight: *const f32, // [768, 768]
     c_proj_bias: *const f32,   // [768]
-    ln2_weight: *const f32,  // [768]
-    ln2_bias: *const f32,    // [768]
-    fc_weight: *const f32,   // [3072, 768]
-    fc_bias: *const f32,     // [3072]
-    proj_weight: *const f32, // [768, 3072]
-    proj_bias: *const f32,   // [768]
+    ln2_weight: *const f32,    // [768]
+    ln2_bias: *const f32,      // [768]
+    fc_weight: *const f32,     // [3072, 768]
+    fc_bias: *const f32,       // [3072]
+    proj_weight: *const f32,   // [768, 3072]
+    proj_bias: *const f32,     // [768]
 }
 
 struct ModelWeights {
-    wte: *const f32,      // [50257, 768] token embeddings
-    wpe: *const f32,      // [1024, 768] position embeddings
+    wte: *const f32, // [50257, 768] token embeddings
+    wpe: *const f32, // [1024, 768] position embeddings
     layers: [LayerWeights; NUM_LAYERS],
     ln_f_weight: *const f32, // [768]
     ln_f_bias: *const f32,   // [768]
@@ -524,9 +528,9 @@ struct Tokenizer {
     vocab_size: u32,
 
     // Merges: sorted by priority (index = priority)
-    merge_a: *const u32,       // [n_merges]
-    merge_b: *const u32,       // [n_merges]
-    merge_result: *const u32,  // [n_merges]
+    merge_a: *const u32,      // [n_merges]
+    merge_b: *const u32,      // [n_merges]
+    merge_result: *const u32, // [n_merges]
     n_merges: u32,
 }
 
@@ -541,7 +545,11 @@ struct TokenizerScratch {
     merge_result: [u32; 64000],
 }
 
-unsafe fn load_tokenizer(data: *const u8, _size: usize, scratch: &mut TokenizerScratch) -> Tokenizer {
+unsafe fn load_tokenizer(
+    data: *const u8,
+    _size: usize,
+    scratch: &mut TokenizerScratch,
+) -> Tokenizer {
     let header = data as *const u32;
     let magic = *header;
     if magic != TOKEN_MAGIC {
@@ -633,7 +641,12 @@ unsafe fn find_token(tok: &Tokenizer, bytes: &[u8]) -> u32 {
 }
 
 /// BPE encode: split text into bytes, then iteratively merge
-unsafe fn bpe_encode(tok: &Tokenizer, text: &[u8], out_tokens: &mut [u32], max_tokens: usize) -> usize {
+unsafe fn bpe_encode(
+    tok: &Tokenizer,
+    text: &[u8],
+    out_tokens: &mut [u32],
+    max_tokens: usize,
+) -> usize {
     if text.is_empty() {
         return 0;
     }
@@ -704,7 +717,11 @@ unsafe fn bpe_encode(tok: &Tokenizer, text: &[u8], out_tokens: &mut [u32], max_t
     }
 
     // Copy to output
-    let copy_len = if n_tok < max_tokens { n_tok } else { max_tokens };
+    let copy_len = if n_tok < max_tokens {
+        n_tok
+    } else {
+        max_tokens
+    };
     let mut i = 0;
     while i < copy_len {
         out_tokens[i] = tokens_buf[i];
@@ -797,20 +814,20 @@ unsafe fn layer_norm(x: *mut f32, weight: *const f32, bias: *const f32) {
 
 struct Scratch {
     // Per-token hidden state
-    hidden: *mut f32,        // [EMBED_DIM]
+    hidden: *mut f32, // [EMBED_DIM]
     // Temporary buffers
-    qkv: *mut f32,           // [3 * EMBED_DIM]
-    attn_out: *mut f32,      // [EMBED_DIM]
-    ff_hidden: *mut f32,     // [FF_DIM]
-    tmp: *mut f32,           // [EMBED_DIM]
-    attn_scores: *mut f32,   // [MAX_SEQ_LEN] for one head
-    logits: *mut f32,        // [VOCAB_SIZE]
+    qkv: *mut f32,         // [3 * EMBED_DIM]
+    attn_out: *mut f32,    // [EMBED_DIM]
+    ff_hidden: *mut f32,   // [FF_DIM]
+    tmp: *mut f32,         // [EMBED_DIM]
+    attn_scores: *mut f32, // [MAX_SEQ_LEN] for one head
+    logits: *mut f32,      // [VOCAB_SIZE]
     // KV cache: [NUM_LAYERS][MAX_SEQ_LEN][EMBED_DIM] for K and V each
     kv_cache_k: *mut f32,
     kv_cache_v: *mut f32,
 }
 
-const SCRATCH_HIDDEN: usize = EMBED_DIM * 4;          // hidden state
+const SCRATCH_HIDDEN: usize = EMBED_DIM * 4; // hidden state
 const SCRATCH_QKV: usize = 3 * EMBED_DIM * 4;
 const SCRATCH_ATTN_OUT: usize = EMBED_DIM * 4;
 const SCRATCH_FF: usize = FF_DIM * 4;
@@ -818,8 +835,13 @@ const SCRATCH_TMP: usize = EMBED_DIM * 4;
 const SCRATCH_ATTN_SCORES: usize = MAX_SEQ_LEN * 4;
 const SCRATCH_LOGITS: usize = VOCAB_SIZE * 4;
 const SCRATCH_KV_ONE: usize = NUM_LAYERS * MAX_SEQ_LEN * EMBED_DIM * 4;
-const SCRATCH_TOTAL: usize = SCRATCH_HIDDEN + SCRATCH_QKV + SCRATCH_ATTN_OUT
-    + SCRATCH_FF + SCRATCH_TMP + SCRATCH_ATTN_SCORES + SCRATCH_LOGITS
+const SCRATCH_TOTAL: usize = SCRATCH_HIDDEN
+    + SCRATCH_QKV
+    + SCRATCH_ATTN_OUT
+    + SCRATCH_FF
+    + SCRATCH_TMP
+    + SCRATCH_ATTN_SCORES
+    + SCRATCH_LOGITS
     + SCRATCH_KV_ONE * 2;
 
 unsafe fn init_scratch(base: *mut u8) -> Scratch {
@@ -847,12 +869,7 @@ unsafe fn init_scratch(base: *mut u8) -> Scratch {
 // Transformer block: LN1 -> Attn -> Residual -> LN2 -> FFN -> Residual
 // ---------------------------------------------------------------------------
 
-unsafe fn transformer_block(
-    layer: &LayerWeights,
-    scratch: &Scratch,
-    layer_idx: usize,
-    pos: usize,
-) {
+unsafe fn transformer_block(layer: &LayerWeights, scratch: &Scratch, layer_idx: usize, pos: usize) {
     // Save residual
     vec_copy(scratch.attn_out, scratch.hidden, EMBED_DIM); // use attn_out as temp residual store
 
@@ -903,7 +920,13 @@ unsafe fn transformer_block(
     // scratch.hidden = ln1(original hidden)
 
     // Compute QKV from hidden (which has ln1 output)
-    mat_vec_mul(layer.c_attn_weight, scratch.hidden, scratch.qkv, 3 * EMBED_DIM, EMBED_DIM);
+    mat_vec_mul(
+        layer.c_attn_weight,
+        scratch.hidden,
+        scratch.qkv,
+        3 * EMBED_DIM,
+        EMBED_DIM,
+    );
     vec_add(scratch.qkv, layer.c_attn_bias, 3 * EMBED_DIM);
 
     let q = scratch.qkv;
@@ -930,7 +953,9 @@ unsafe fn transformer_block(
         let head_off = h * HEAD_DIM;
         let mut j = 0;
         while j <= pos {
-            let cached_k = scratch.kv_cache_k.add(kv_layer_offset + j * EMBED_DIM + head_off);
+            let cached_k = scratch
+                .kv_cache_k
+                .add(kv_layer_offset + j * EMBED_DIM + head_off);
             *scratch.attn_scores.add(j) = dot(q.add(head_off), cached_k, HEAD_DIM) * scale;
             j += 1;
         }
@@ -942,7 +967,9 @@ unsafe fn transformer_block(
         while j <= pos {
             let w = *scratch.attn_scores.add(j);
             if w > 1e-8 {
-                let cached_v = scratch.kv_cache_v.add(kv_layer_offset + j * EMBED_DIM + head_off);
+                let cached_v = scratch
+                    .kv_cache_v
+                    .add(kv_layer_offset + j * EMBED_DIM + head_off);
                 let mut dd = 0;
                 while dd < HEAD_DIM {
                     *scratch.attn_out.add(head_off + dd) += w * *cached_v.add(dd);
@@ -955,7 +982,13 @@ unsafe fn transformer_block(
     }
 
     // Output projection: hidden = c_proj_weight * attn_out + c_proj_bias
-    mat_vec_mul(layer.c_proj_weight, scratch.attn_out, scratch.hidden, EMBED_DIM, EMBED_DIM);
+    mat_vec_mul(
+        layer.c_proj_weight,
+        scratch.attn_out,
+        scratch.hidden,
+        EMBED_DIM,
+        EMBED_DIM,
+    );
     vec_add(scratch.hidden, layer.c_proj_bias, EMBED_DIM);
 
     // Residual: hidden = residual + attn_proj_output
@@ -969,7 +1002,13 @@ unsafe fn transformer_block(
     layer_norm(scratch.hidden, layer.ln2_weight, layer.ln2_bias);
 
     // FFN: ff_hidden = gelu(fc_weight * hidden + fc_bias)
-    mat_vec_mul(layer.fc_weight, scratch.hidden, scratch.ff_hidden, FF_DIM, EMBED_DIM);
+    mat_vec_mul(
+        layer.fc_weight,
+        scratch.hidden,
+        scratch.ff_hidden,
+        FF_DIM,
+        EMBED_DIM,
+    );
     vec_add(scratch.ff_hidden, layer.fc_bias, FF_DIM);
     let mut i = 0;
     while i < FF_DIM {
@@ -978,7 +1017,13 @@ unsafe fn transformer_block(
     }
 
     // proj: hidden = proj_weight * ff_hidden + proj_bias
-    mat_vec_mul(layer.proj_weight, scratch.ff_hidden, scratch.hidden, EMBED_DIM, FF_DIM);
+    mat_vec_mul(
+        layer.proj_weight,
+        scratch.ff_hidden,
+        scratch.hidden,
+        EMBED_DIM,
+        FF_DIM,
+    );
     vec_add(scratch.hidden, layer.proj_bias, EMBED_DIM);
 
     // Residual
@@ -989,14 +1034,13 @@ unsafe fn transformer_block(
 // Forward pass (single token at position pos)
 // ---------------------------------------------------------------------------
 
-unsafe fn forward(
-    weights: &ModelWeights,
-    scratch: &Scratch,
-    token: u32,
-    pos: usize,
-) {
+unsafe fn forward(weights: &ModelWeights, scratch: &Scratch, token: u32, pos: usize) {
     // Embed: hidden = wte[token] + wpe[pos]
-    vec_copy(scratch.hidden, weights.wte.add(token as usize * EMBED_DIM), EMBED_DIM);
+    vec_copy(
+        scratch.hidden,
+        weights.wte.add(token as usize * EMBED_DIM),
+        EMBED_DIM,
+    );
     vec_add(scratch.hidden, weights.wpe.add(pos * EMBED_DIM), EMBED_DIM);
 
     // 12 transformer blocks

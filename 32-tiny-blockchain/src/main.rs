@@ -392,7 +392,9 @@ fn run() {
             let mut resp = [0u8; 4096];
             let mut rlen: usize = 0;
 
-            if method_is(&req_buf, method_end, b"GET") && path_eq(&req_buf, path_start, path_end, b"/") {
+            if method_is(&req_buf, method_end, b"GET")
+                && path_eq(&req_buf, path_start, path_end, b"/")
+            {
                 // Chain info
                 let mut num_buf = [0u8; 10];
                 let mut hex_buf = [0u8; 16];
@@ -491,7 +493,12 @@ fn run() {
                     send_response(client, b"200 OK", b"text/plain", &resp[..rlen]);
                     log_request(req_count, b"POST /block", b"200");
                 } else {
-                    send_response(client, b"507 Insufficient Storage", b"text/plain", b"chain full\n");
+                    send_response(
+                        client,
+                        b"507 Insufficient Storage",
+                        b"text/plain",
+                        b"chain full\n",
+                    );
                     log_request(req_count, b"POST /block", b"507");
                 }
             } else {

@@ -534,12 +534,7 @@ fn run() {
                             );
                             log_request(req_count, b"GET /obj/*", b"200");
                         } else {
-                            send_response(
-                                client,
-                                b"404 Not Found",
-                                b"text/plain",
-                                b"not found\n",
-                            );
+                            send_response(client, b"404 Not Found", b"text/plain", b"not found\n");
                             log_request(req_count, b"GET /obj/*", b"404");
                         }
                     }
@@ -574,12 +569,7 @@ fn run() {
                             send_response(client, b"200 OK", b"text/plain", &resp[..rlen]);
                             log_request(req_count, b"DELETE /obj/*", b"200");
                         } else {
-                            send_response(
-                                client,
-                                b"404 Not Found",
-                                b"text/plain",
-                                b"not found\n",
-                            );
+                            send_response(client, b"404 Not Found", b"text/plain", b"not found\n");
                             log_request(req_count, b"DELETE /obj/*", b"404");
                         }
                     }

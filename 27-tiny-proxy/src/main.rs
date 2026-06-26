@@ -114,8 +114,7 @@ fn run() {
         let mut conn_count: u32 = 0;
 
         loop {
-            let client_fd =
-                libc::accept(listen_fd, core::ptr::null_mut(), core::ptr::null_mut());
+            let client_fd = libc::accept(listen_fd, core::ptr::null_mut(), core::ptr::null_mut());
             if client_fd < 0 {
                 continue;
             }
@@ -182,11 +181,7 @@ fn run() {
 
                 // Client -> Target
                 if fds[0].revents & libc::POLLIN != 0 {
-                    let n = libc::read(
-                        client_fd,
-                        buf.as_mut_ptr() as *mut libc::c_void,
-                        buf.len(),
-                    );
+                    let n = libc::read(client_fd, buf.as_mut_ptr() as *mut libc::c_void, buf.len());
                     if n <= 0 {
                         break;
                     }
@@ -195,11 +190,7 @@ fn run() {
 
                 // Target -> Client
                 if fds[1].revents & libc::POLLIN != 0 {
-                    let n = libc::read(
-                        target_fd,
-                        buf.as_mut_ptr() as *mut libc::c_void,
-                        buf.len(),
-                    );
+                    let n = libc::read(target_fd, buf.as_mut_ptr() as *mut libc::c_void, buf.len());
                     if n <= 0 {
                         break;
                     }
@@ -207,9 +198,7 @@ fn run() {
                 }
 
                 // Error on either fd
-                if fds[0].revents & libc::POLLERR != 0
-                    || fds[1].revents & libc::POLLERR != 0
-                {
+                if fds[0].revents & libc::POLLERR != 0 || fds[1].revents & libc::POLLERR != 0 {
                     break;
                 }
             }

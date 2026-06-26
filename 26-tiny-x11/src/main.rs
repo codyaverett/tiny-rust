@@ -125,7 +125,12 @@ unsafe fn x11_connect() -> i32 {
     }
 
     let addr_len = 2 + path.len() + 1; // family + path + null
-    if libc::connect(fd, &addr as *const _ as *const libc::sockaddr, addr_len as u32) < 0 {
+    if libc::connect(
+        fd,
+        &addr as *const _ as *const libc::sockaddr,
+        addr_len as u32,
+    ) < 0
+    {
         write_all(2, b"tiny-x11: connect() failed -- is X11 running?\n");
         write_all(2, b"  Try: xhost +local:\n");
         libc::exit(1);
@@ -164,7 +169,7 @@ fn run() {
         setup_req[0] = b'l'; // little-endian
         put_u16_le(&mut setup_req, 2, 11); // major version
         put_u16_le(&mut setup_req, 4, 0); // minor version
-        // auth name/data lengths = 0 (bytes 6-11 stay zero)
+                                          // auth name/data lengths = 0 (bytes 6-11 stay zero)
         write_all(fd, &setup_req);
 
         // Read first 8 bytes of response to check status and get length
@@ -273,7 +278,7 @@ fn run() {
 
         // Values (in mask bit order):
         put_u32_le(&mut cw, 32, white_pixel); // BackPixel
-        // EventMask: KeyPress (0x01) | Exposure (0x8000) | StructureNotify (0x20000)
+                                              // EventMask: KeyPress (0x01) | Exposure (0x8000) | StructureNotify (0x20000)
         put_u32_le(&mut cw, 36, 0x00028001);
         write_all(fd, &cw);
 

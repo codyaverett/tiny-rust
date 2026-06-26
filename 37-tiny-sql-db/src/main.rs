@@ -68,7 +68,11 @@ fn format_i32(n: i32, buf: &mut [u8; 11]) -> usize {
         return 1;
     }
     let negative = n < 0;
-    let mut val = if negative { (-(n as i64)) as u32 } else { n as u32 };
+    let mut val = if negative {
+        (-(n as i64)) as u32
+    } else {
+        n as u32
+    };
     let mut pos = 11;
     while val > 0 {
         pos -= 1;
@@ -260,8 +264,16 @@ fn name_eq_ci(a: &[u8], a_len: usize, b: &[u8], b_len: usize) -> bool {
     }
     let mut i = 0;
     while i < a_len {
-        let ca = if a[i] >= b'A' && a[i] <= b'Z' { a[i] + 32 } else { a[i] };
-        let cb = if b[i] >= b'A' && b[i] <= b'Z' { b[i] + 32 } else { b[i] };
+        let ca = if a[i] >= b'A' && a[i] <= b'Z' {
+            a[i] + 32
+        } else {
+            a[i]
+        };
+        let cb = if b[i] >= b'A' && b[i] <= b'Z' {
+            b[i] + 32
+        } else {
+            b[i]
+        };
         if ca != cb {
             return false;
         }
@@ -352,7 +364,11 @@ fn keyword_match(s: &[u8], len: usize) -> Option<Keyword> {
     }
     let mut i = 0;
     while i < len {
-        lower[i] = if s[i] >= b'A' && s[i] <= b'Z' { s[i] + 32 } else { s[i] };
+        lower[i] = if s[i] >= b'A' && s[i] <= b'Z' {
+            s[i] + 32
+        } else {
+            s[i]
+        };
         i += 1;
     }
     let w = &lower[..len];
@@ -388,22 +404,58 @@ fn keyword_match(s: &[u8], len: usize) -> Option<Keyword> {
         }
     }
     if len == 6 {
-        if w[0] == b'c' && w[1] == b'r' && w[2] == b'e' && w[3] == b'a' && w[4] == b't' && w[5] == b'e' {
+        if w[0] == b'c'
+            && w[1] == b'r'
+            && w[2] == b'e'
+            && w[3] == b'a'
+            && w[4] == b't'
+            && w[5] == b'e'
+        {
             return Some(Keyword::Create);
         }
-        if w[0] == b'i' && w[1] == b'n' && w[2] == b's' && w[3] == b'e' && w[4] == b'r' && w[5] == b't' {
+        if w[0] == b'i'
+            && w[1] == b'n'
+            && w[2] == b's'
+            && w[3] == b'e'
+            && w[4] == b'r'
+            && w[5] == b't'
+        {
             return Some(Keyword::Insert);
         }
-        if w[0] == b's' && w[1] == b'e' && w[2] == b'l' && w[3] == b'e' && w[4] == b'c' && w[5] == b't' {
+        if w[0] == b's'
+            && w[1] == b'e'
+            && w[2] == b'l'
+            && w[3] == b'e'
+            && w[4] == b'c'
+            && w[5] == b't'
+        {
             return Some(Keyword::Select);
         }
-        if w[0] == b'u' && w[1] == b'p' && w[2] == b'd' && w[3] == b'a' && w[4] == b't' && w[5] == b'e' {
+        if w[0] == b'u'
+            && w[1] == b'p'
+            && w[2] == b'd'
+            && w[3] == b'a'
+            && w[4] == b't'
+            && w[5] == b'e'
+        {
             return Some(Keyword::Update);
         }
-        if w[0] == b'd' && w[1] == b'e' && w[2] == b'l' && w[3] == b'e' && w[4] == b't' && w[5] == b'e' {
+        if w[0] == b'd'
+            && w[1] == b'e'
+            && w[2] == b'l'
+            && w[3] == b'e'
+            && w[4] == b't'
+            && w[5] == b'e'
+        {
             return Some(Keyword::Delete);
         }
-        if w[0] == b'v' && w[1] == b'a' && w[2] == b'l' && w[3] == b'u' && w[4] == b'e' && w[5] == b's' {
+        if w[0] == b'v'
+            && w[1] == b'a'
+            && w[2] == b'l'
+            && w[3] == b'u'
+            && w[4] == b'e'
+            && w[5] == b's'
+        {
             return Some(Keyword::Values);
         }
     }
@@ -412,7 +464,12 @@ fn keyword_match(s: &[u8], len: usize) -> Option<Keyword> {
 
 fn next_token(p: &mut Parser) {
     // Skip whitespace
-    while p.pos < p.len && (p.input[p.pos] == b' ' || p.input[p.pos] == b'\t' || p.input[p.pos] == b'\r' || p.input[p.pos] == b'\n') {
+    while p.pos < p.len
+        && (p.input[p.pos] == b' '
+            || p.input[p.pos] == b'\t'
+            || p.input[p.pos] == b'\r'
+            || p.input[p.pos] == b'\n')
+    {
         p.pos += 1;
     }
     if p.pos >= p.len {
@@ -421,11 +478,26 @@ fn next_token(p: &mut Parser) {
     }
     let ch = p.input[p.pos];
     match ch {
-        b'(' => { p.tok = Token::LParen; p.pos += 1; }
-        b')' => { p.tok = Token::RParen; p.pos += 1; }
-        b',' => { p.tok = Token::Comma; p.pos += 1; }
-        b'*' => { p.tok = Token::Star; p.pos += 1; }
-        b'=' => { p.tok = Token::Eq; p.pos += 1; }
+        b'(' => {
+            p.tok = Token::LParen;
+            p.pos += 1;
+        }
+        b')' => {
+            p.tok = Token::RParen;
+            p.pos += 1;
+        }
+        b',' => {
+            p.tok = Token::Comma;
+            p.pos += 1;
+        }
+        b'*' => {
+            p.tok = Token::Star;
+            p.pos += 1;
+        }
+        b'=' => {
+            p.tok = Token::Eq;
+            p.pos += 1;
+        }
         b'\'' => {
             // String literal
             p.pos += 1;
@@ -476,7 +548,11 @@ fn next_token(p: &mut Parser) {
                 let start = p.pos;
                 while p.pos < p.len {
                     let c = p.input[p.pos];
-                    if (c >= b'A' && c <= b'Z') || (c >= b'a' && c <= b'z') || (c >= b'0' && c <= b'9') || c == b'_' {
+                    if (c >= b'A' && c <= b'Z')
+                        || (c >= b'a' && c <= b'z')
+                        || (c >= b'0' && c <= b'9')
+                        || c == b'_'
+                    {
                         p.pos += 1;
                     } else {
                         break;
@@ -567,7 +643,11 @@ fn exec_create_table(p: &mut Parser, db: &mut Database, resp: &mut [u8], rlen: &
             return;
         }
         let cname_start = p.tok_start;
-        let cname_len = if p.tok_len > MAX_NAME_LEN { MAX_NAME_LEN } else { p.tok_len };
+        let cname_len = if p.tok_len > MAX_NAME_LEN {
+            MAX_NAME_LEN
+        } else {
+            p.tok_len
+        };
         let mut j = 0;
         while j < cname_len {
             table.col_names[col_count][j] = p.input[cname_start + j];
@@ -680,7 +760,11 @@ fn exec_insert(p: &mut Parser, db: &mut Database, resp: &mut [u8], rlen: &mut us
             }
             Token::StrLit => {
                 table.rows[row_idx][col].vtype = ValType::Text;
-                let copy_len = if p.str_len > MAX_TEXT_LEN { MAX_TEXT_LEN } else { p.str_len };
+                let copy_len = if p.str_len > MAX_TEXT_LEN {
+                    MAX_TEXT_LEN
+                } else {
+                    p.str_len
+                };
                 let mut j = 0;
                 while j < copy_len {
                     table.rows[row_idx][col].text_val[j] = p.str_buf[j];
@@ -744,7 +828,11 @@ fn parse_where(p: &mut Parser, table: &Table) -> Option<(usize, Value)> {
         }
         Token::StrLit => {
             val.vtype = ValType::Text;
-            let copy_len = if p.str_len > MAX_TEXT_LEN { MAX_TEXT_LEN } else { p.str_len };
+            let copy_len = if p.str_len > MAX_TEXT_LEN {
+                MAX_TEXT_LEN
+            } else {
+                p.str_len
+            };
             let mut j = 0;
             while j < copy_len {
                 val.text_val[j] = p.str_buf[j];
@@ -819,7 +907,11 @@ fn exec_select(p: &mut Parser, db: &mut Database, resp: &mut [u8], rlen: &mut us
                 copy_to(resp, rlen, b"ERROR: too many columns\n");
                 return;
             }
-            let clen = if p.tok_len > MAX_NAME_LEN { MAX_NAME_LEN } else { p.tok_len };
+            let clen = if p.tok_len > MAX_NAME_LEN {
+                MAX_NAME_LEN
+            } else {
+                p.tok_len
+            };
             let mut j = 0;
             while j < clen {
                 col_names[sel_count][j] = p.input[p.tok_start + j];
@@ -891,7 +983,11 @@ fn exec_select(p: &mut Parser, db: &mut Database, resp: &mut [u8], rlen: &mut us
             if i > 0 {
                 copy_to(resp, rlen, b"\t");
             }
-            copy_to(resp, rlen, &table.col_names[sel_cols[i]][..table.col_name_lens[sel_cols[i]]]);
+            copy_to(
+                resp,
+                rlen,
+                &table.col_names[sel_cols[i]][..table.col_name_lens[sel_cols[i]]],
+            );
             i += 1;
         }
         copy_to(resp, rlen, b"\n");
@@ -1048,7 +1144,11 @@ fn exec_update(p: &mut Parser, db: &mut Database, resp: &mut [u8], rlen: &mut us
         }
         Token::StrLit => {
             set_val.vtype = ValType::Text;
-            let copy_len = if p.str_len > MAX_TEXT_LEN { MAX_TEXT_LEN } else { p.str_len };
+            let copy_len = if p.str_len > MAX_TEXT_LEN {
+                MAX_TEXT_LEN
+            } else {
+                p.str_len
+            };
             let mut j = 0;
             while j < copy_len {
                 set_val.text_val[j] = p.str_buf[j];
@@ -1372,7 +1472,11 @@ fn run() {
                 let mut i = 0;
                 while i < MAX_TABLES {
                     if db.tables[i].occupied {
-                        copy_to(&mut resp, &mut rlen, &db.tables[i].name[..db.tables[i].name_len]);
+                        copy_to(
+                            &mut resp,
+                            &mut rlen,
+                            &db.tables[i].name[..db.tables[i].name_len],
+                        );
                         copy_to(&mut resp, &mut rlen, b"\n");
                     }
                     i += 1;
@@ -1393,7 +1497,11 @@ fn run() {
                 let mut i = 0;
                 while i < MAX_TABLES {
                     if db.tables[i].occupied {
-                        copy_to(&mut resp, &mut rlen, &db.tables[i].name[..db.tables[i].name_len]);
+                        copy_to(
+                            &mut resp,
+                            &mut rlen,
+                            &db.tables[i].name[..db.tables[i].name_len],
+                        );
                         copy_to(&mut resp, &mut rlen, b": ");
                         let n = format_u32(db.tables[i].row_count as u32, &mut num_buf);
                         copy_to(&mut resp, &mut rlen, &num_buf[..n]);

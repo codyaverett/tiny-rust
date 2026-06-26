@@ -183,7 +183,11 @@ impl Args {
             libc::O_RDONLY,
         );
         if fd >= 0 {
-            let n = libc::read(fd, args.buf.as_mut_ptr() as *mut libc::c_void, args.buf.len());
+            let n = libc::read(
+                fd,
+                args.buf.as_mut_ptr() as *mut libc::c_void,
+                args.buf.len(),
+            );
             libc::close(fd);
             if n > 0 {
                 args.len = n as usize;

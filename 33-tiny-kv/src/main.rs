@@ -537,7 +537,11 @@ fn run() {
                         let mut resp = [0u8; 128];
                         let mut rlen: usize = 0;
                         copy_to(&mut resp, &mut rlen, b"stored ");
-                        copy_to(&mut resp, &mut rlen, &req_buf[key_start..key_start + key_len]);
+                        copy_to(
+                            &mut resp,
+                            &mut rlen,
+                            &req_buf[key_start..key_start + key_len],
+                        );
                         copy_to(&mut resp, &mut rlen, b"\n");
 
                         send_response(client, b"200 OK", b"text/plain", &resp[..rlen]);
@@ -565,7 +569,11 @@ fn run() {
                     let mut resp = [0u8; 128];
                     let mut rlen: usize = 0;
                     copy_to(&mut resp, &mut rlen, b"deleted ");
-                    copy_to(&mut resp, &mut rlen, &req_buf[key_start..key_start + key_len]);
+                    copy_to(
+                        &mut resp,
+                        &mut rlen,
+                        &req_buf[key_start..key_start + key_len],
+                    );
                     copy_to(&mut resp, &mut rlen, b"\n");
 
                     send_response(client, b"200 OK", b"text/plain", &resp[..rlen]);

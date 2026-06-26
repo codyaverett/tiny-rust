@@ -234,7 +234,11 @@ fn parse_args() -> Args {
         if fd < 0 {
             return args;
         }
-        let n = libc::read(fd, args.buf.as_mut_ptr() as *mut libc::c_void, args.buf.len());
+        let n = libc::read(
+            fd,
+            args.buf.as_mut_ptr() as *mut libc::c_void,
+            args.buf.len(),
+        );
         libc::close(fd);
         if n <= 0 {
             return args;
@@ -395,13 +399,17 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         let e1 = next_token_end(line, s1);
         if s1 == e1 {
             copy_to(&mut resp, &mut rlen, b"ERR missing topic name\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
         let topic_name = &line[s1..e1];
         if topic_name.len() > MAX_NAME_LEN {
             copy_to(&mut resp, &mut rlen, b"ERR topic name too long\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -419,7 +427,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         // Check if already exists
         if find_topic(broker, topic_name).is_some() {
             copy_to(&mut resp, &mut rlen, b"OK topic already exists\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -435,7 +445,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         }
         if slot == MAX_TOPICS {
             copy_to(&mut resp, &mut rlen, b"ERR max topics reached\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -454,7 +466,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         let n = format_u32(num_parts as u32, &mut nbuf);
         copy_to(&mut resp, &mut rlen, &nbuf[..n]);
         copy_to(&mut resp, &mut rlen, b"\n");
-        unsafe { write_all(client_fd, &resp[..rlen]); }
+        unsafe {
+            write_all(client_fd, &resp[..rlen]);
+        }
     } else if bytes_eq(command, b"PRODUCE") {
         // PRODUCE topic key value
         let s1 = skip_spaces(line, end);
@@ -465,8 +479,14 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         let e3 = next_token_end(line, s3);
 
         if s1 == e1 || s2 == e2 || s3 == e3 {
-            copy_to(&mut resp, &mut rlen, b"ERR usage: PRODUCE topic key value\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            copy_to(
+                &mut resp,
+                &mut rlen,
+                b"ERR usage: PRODUCE topic key value\n",
+            );
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -478,7 +498,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             Some(i) => i,
             None => {
                 copy_to(&mut resp, &mut rlen, b"ERR topic not found\n");
-                unsafe { write_all(client_fd, &resp[..rlen]); }
+                unsafe {
+                    write_all(client_fd, &resp[..rlen]);
+                }
                 return;
             }
         };
@@ -500,7 +522,11 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         };
 
         let msg = &mut partition.messages[msg_slot];
-        let klen = if key.len() > MAX_KEY_LEN { MAX_KEY_LEN } else { key.len() };
+        let klen = if key.len() > MAX_KEY_LEN {
+            MAX_KEY_LEN
+        } else {
+            key.len()
+        };
         let mut i = 0;
         while i < klen {
             msg.key[i] = key[i];
@@ -508,7 +534,11 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         }
         msg.key_len = klen;
 
-        let vlen = if value.len() > MAX_MSG_LEN { MAX_MSG_LEN } else { value.len() };
+        let vlen = if value.len() > MAX_MSG_LEN {
+            MAX_MSG_LEN
+        } else {
+            value.len()
+        };
         i = 0;
         while i < vlen {
             msg.data[i] = value[i];
@@ -530,7 +560,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         let n = format_u64(msg.offset, &mut nbuf64);
         copy_to(&mut resp, &mut rlen, &nbuf64[..n]);
         copy_to(&mut resp, &mut rlen, b"\n");
-        unsafe { write_all(client_fd, &resp[..rlen]); }
+        unsafe {
+            write_all(client_fd, &resp[..rlen]);
+        }
     } else if bytes_eq(command, b"FETCH") {
         // FETCH topic partition offset [count]
         let s1 = skip_spaces(line, end);
@@ -541,8 +573,14 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         let e3 = next_token_end(line, s3);
 
         if s1 == e1 || s2 == e2 || s3 == e3 {
-            copy_to(&mut resp, &mut rlen, b"ERR usage: FETCH topic partition offset [count]\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            copy_to(
+                &mut resp,
+                &mut rlen,
+                b"ERR usage: FETCH topic partition offset [count]\n",
+            );
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -562,14 +600,18 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             Some(i) => i,
             None => {
                 copy_to(&mut resp, &mut rlen, b"ERR topic not found\n");
-                unsafe { write_all(client_fd, &resp[..rlen]); }
+                unsafe {
+                    write_all(client_fd, &resp[..rlen]);
+                }
                 return;
             }
         };
 
         if pidx >= broker.topics[tidx].num_partitions {
             copy_to(&mut resp, &mut rlen, b"ERR invalid partition\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -601,12 +643,18 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             idx += 1;
         }
         copy_to(&mut resp, &mut rlen, b"END\n");
-        unsafe { write_all(client_fd, &resp[..rlen]); }
+        unsafe {
+            write_all(client_fd, &resp[..rlen]);
+        }
     } else if bytes_eq(command, b"LIST_TOPICS") {
         let mut i = 0;
         while i < MAX_TOPICS {
             if broker.topics[i].active {
-                copy_to(&mut resp, &mut rlen, &broker.topics[i].name[..broker.topics[i].name_len]);
+                copy_to(
+                    &mut resp,
+                    &mut rlen,
+                    &broker.topics[i].name[..broker.topics[i].name_len],
+                );
                 copy_to(&mut resp, &mut rlen, b" partitions=");
                 let mut nbuf = [0u8; 10];
                 let n = format_u32(broker.topics[i].num_partitions as u32, &mut nbuf);
@@ -616,7 +664,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             i += 1;
         }
         copy_to(&mut resp, &mut rlen, b"END\n");
-        unsafe { write_all(client_fd, &resp[..rlen]); }
+        unsafe {
+            write_all(client_fd, &resp[..rlen]);
+        }
     } else if bytes_eq(command, b"JOIN_GROUP") {
         // JOIN_GROUP group topic
         let s1 = skip_spaces(line, end);
@@ -626,7 +676,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
 
         if s1 == e1 || s2 == e2 {
             copy_to(&mut resp, &mut rlen, b"ERR usage: JOIN_GROUP group topic\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -637,7 +689,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             Some(i) => i,
             None => {
                 copy_to(&mut resp, &mut rlen, b"ERR topic not found\n");
-                unsafe { write_all(client_fd, &resp[..rlen]); }
+                unsafe {
+                    write_all(client_fd, &resp[..rlen]);
+                }
                 return;
             }
         };
@@ -658,11 +712,17 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
                 }
                 if slot == MAX_GROUPS {
                     copy_to(&mut resp, &mut rlen, b"ERR max groups reached\n");
-                    unsafe { write_all(client_fd, &resp[..rlen]); }
+                    unsafe {
+                        write_all(client_fd, &resp[..rlen]);
+                    }
                     return;
                 }
                 let group = &mut broker.groups[slot];
-                let nlen = if group_name.len() > MAX_NAME_LEN { MAX_NAME_LEN } else { group_name.len() };
+                let nlen = if group_name.len() > MAX_NAME_LEN {
+                    MAX_NAME_LEN
+                } else {
+                    group_name.len()
+                };
                 let mut j = 0;
                 while j < nlen {
                     group.name[j] = group_name[j];
@@ -687,7 +747,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         }
         if member_slot == MAX_MEMBERS {
             copy_to(&mut resp, &mut rlen, b"ERR group full\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -712,7 +774,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             pi += 1;
         }
         copy_to(&mut resp, &mut rlen, b"\n");
-        unsafe { write_all(client_fd, &resp[..rlen]); }
+        unsafe {
+            write_all(client_fd, &resp[..rlen]);
+        }
     } else if bytes_eq(command, b"LEAVE_GROUP") {
         // LEAVE_GROUP group
         let s1 = skip_spaces(line, end);
@@ -720,7 +784,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
 
         if s1 == e1 {
             copy_to(&mut resp, &mut rlen, b"ERR usage: LEAVE_GROUP group\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -730,7 +796,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             Some(i) => i,
             None => {
                 copy_to(&mut resp, &mut rlen, b"ERR group not found\n");
-                unsafe { write_all(client_fd, &resp[..rlen]); }
+                unsafe {
+                    write_all(client_fd, &resp[..rlen]);
+                }
                 return;
             }
         };
@@ -750,7 +818,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         rebalance_group(broker, gidx);
 
         copy_to(&mut resp, &mut rlen, b"OK left group\n");
-        unsafe { write_all(client_fd, &resp[..rlen]); }
+        unsafe {
+            write_all(client_fd, &resp[..rlen]);
+        }
     } else if bytes_eq(command, b"COMMIT") {
         // COMMIT group topic partition offset
         let s1 = skip_spaces(line, end);
@@ -763,8 +833,14 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         let e4 = next_token_end(line, s4);
 
         if s1 == e1 || s2 == e2 || s3 == e3 || s4 == e4 {
-            copy_to(&mut resp, &mut rlen, b"ERR usage: COMMIT group topic partition offset\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            copy_to(
+                &mut resp,
+                &mut rlen,
+                b"ERR usage: COMMIT group topic partition offset\n",
+            );
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -776,7 +852,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             Some(i) => i,
             None => {
                 copy_to(&mut resp, &mut rlen, b"ERR group not found\n");
-                unsafe { write_all(client_fd, &resp[..rlen]); }
+                unsafe {
+                    write_all(client_fd, &resp[..rlen]);
+                }
                 return;
             }
         };
@@ -786,7 +864,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
         }
 
         copy_to(&mut resp, &mut rlen, b"OK committed\n");
-        unsafe { write_all(client_fd, &resp[..rlen]); }
+        unsafe {
+            write_all(client_fd, &resp[..rlen]);
+        }
     } else if bytes_eq(command, b"OFFSETS") {
         // OFFSETS group topic
         let s1 = skip_spaces(line, end);
@@ -796,7 +876,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
 
         if s1 == e1 || s2 == e2 {
             copy_to(&mut resp, &mut rlen, b"ERR usage: OFFSETS group topic\n");
-            unsafe { write_all(client_fd, &resp[..rlen]); }
+            unsafe {
+                write_all(client_fd, &resp[..rlen]);
+            }
             return;
         }
 
@@ -807,7 +889,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             Some(i) => i,
             None => {
                 copy_to(&mut resp, &mut rlen, b"ERR group not found\n");
-                unsafe { write_all(client_fd, &resp[..rlen]); }
+                unsafe {
+                    write_all(client_fd, &resp[..rlen]);
+                }
                 return;
             }
         };
@@ -816,7 +900,9 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             Some(i) => i,
             None => {
                 copy_to(&mut resp, &mut rlen, b"ERR topic not found\n");
-                unsafe { write_all(client_fd, &resp[..rlen]); }
+                unsafe {
+                    write_all(client_fd, &resp[..rlen]);
+                }
                 return;
             }
         };
@@ -836,10 +922,14 @@ fn handle_command(broker: &mut Broker, client_fd: i32, cmd: &[u8], cmd_len: usiz
             p += 1;
         }
         copy_to(&mut resp, &mut rlen, b"END\n");
-        unsafe { write_all(client_fd, &resp[..rlen]); }
+        unsafe {
+            write_all(client_fd, &resp[..rlen]);
+        }
     } else {
         copy_to(&mut resp, &mut rlen, b"ERR unknown command\n");
-        unsafe { write_all(client_fd, &resp[..rlen]); }
+        unsafe {
+            write_all(client_fd, &resp[..rlen]);
+        }
     }
 }
 
@@ -947,10 +1037,8 @@ fn run_broker() {
             write_all(2, b"tiny-kafka-cluster: mmap() for pollfds failed\n");
             libc::exit(1);
         }
-        let pollfds = core::slice::from_raw_parts_mut(
-            poll_ptr as *mut libc::pollfd,
-            1 + MAX_CLIENTS,
-        );
+        let pollfds =
+            core::slice::from_raw_parts_mut(poll_ptr as *mut libc::pollfd, 1 + MAX_CLIENTS);
 
         // Initialize listen pollfd
         pollfds[0].fd = sock;
@@ -1374,7 +1462,12 @@ fn run_consumer(host: &[u8], port: u16, group: &[u8], topic: &[u8]) {
                     write_all(1, b"\n");
 
                     // Parse offset from "MSG offset key data"
-                    if line.len() > 4 && line[0] == b'M' && line[1] == b'S' && line[2] == b'G' && line[3] == b' ' {
+                    if line.len() > 4
+                        && line[0] == b'M'
+                        && line[1] == b'S'
+                        && line[2] == b'G'
+                        && line[3] == b' '
+                    {
                         let s = skip_spaces(line, 4);
                         let e = next_token_end(line, s);
                         if s < e {
@@ -1447,7 +1540,10 @@ fn run() {
         // producer host port topic
         if args.count < 4 {
             unsafe {
-                write_all(2, b"usage: tiny-kafka-cluster producer <host> <port> <topic>\n");
+                write_all(
+                    2,
+                    b"usage: tiny-kafka-cluster producer <host> <port> <topic>\n",
+                );
                 libc::exit(1);
             }
         }
@@ -1459,7 +1555,10 @@ fn run() {
         // consumer host port group topic
         if args.count < 5 {
             unsafe {
-                write_all(2, b"usage: tiny-kafka-cluster consumer <host> <port> <group> <topic>\n");
+                write_all(
+                    2,
+                    b"usage: tiny-kafka-cluster consumer <host> <port> <group> <topic>\n",
+                );
                 libc::exit(1);
             }
         }
